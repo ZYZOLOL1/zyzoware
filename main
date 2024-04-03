@@ -1,10 +1,13 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver2"))()
+local function loadResolverScripts()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver2"))()
+end
 
-local SelectedPart = "HumanoidRootPart"
-local Prediction = true
-local PredictionValue = 0.136
 
+if Settings.rewrittenmain.Resolver then
+
+    loadResolverScripts()
+end
 
     local AnchorCount = 0
     local MaxAnchor = 50
