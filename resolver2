@@ -1,0 +1,74 @@
+function getClosestPlayerToCursor()
+    local closestPlayer
+    local shortestDistance = 137
+
+    for i, v in pairs(game.Players:GetPlayers()) do
+        if
+            v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and
+                v.Character.Humanoid.Health ~= 0 and
+                v.Character:FindFirstChild("LowerTorso")
+         then
+            local pos = CC:WorldToViewportPoint(v.Character.LowerTorso.Position)
+            local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalMouse.X, LocalMouse.Y)).magnitude
+            if magnitude < shortestDistance then
+                closestPlayer = v
+                shortestDistance = magnitude
+            end
+        end
+    end
+    return closestPlayer
+end
+
+function getVel(Target)
+    local lastPosition = Target.Character.HumanoidRootPart.Position
+    wait(1)
+    local currentPosition = Target.Character.HumanoidRootPart.Position
+    local newVelocity = (currentPosition - lastPosition) / 1
+    return newVelocity
+end
+
+function getVel(Before, After, deltaTime)
+	local Displacement = (After - Before)
+	local Velocity = Displacement / deltaTime
+
+	return Velocity
+end
+
+local PreviousPosition; 
+local PartVelocity; 
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+        if Plr ~= nil then			
+			if (not PreviousPosition) then
+				PreviousPosition = Plr.Character[getgenv().Partz].Position
+			end
+			PartVelocity = getVel(PreviousPosition, Plr.Character[getgenv().Partz].Position, deltaTime)
+			PreviousPosition = Plr.Character[getgenv().Partz].Position
+			-- 
+			if getgenv().Tracer == true and Locking then
+                local Vector, OnScreen =
+                    cc:worldToViewportPoint(
+                    Plr.Character[getgenv().Partz].Position + PartVelocity * getgenv().Prediction
+                )
+                Tracer.Visible = true
+                Tracer.Position = Vector2.new(Vector.X, Vector.Y)
+            else
+                Tracer.Visible = false
+            end
+        end
+    end
+)
+
+local rawmetatable = getrawmetatable(game)
+local old = rawmetatable.__namecall
+setreadonly(rawmetatable, false)
+rawmetatable.__namecall =
+    newcclosure(
+    function(...)
+        local args = {...}
+        if Plr ~= nil and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
+            args[3] = Plr.Character[getgenv().Partz].Position + PartVelocity * getgenv().Prediction
+            return old(unpack(args))
+        end
+        return old(...)
+    end
+)
