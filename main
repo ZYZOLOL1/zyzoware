@@ -1,4 +1,5 @@
- --- // $ zyzo0001 come blaze \\ ---
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ZYZOLOL1/zyzoware/main/resolver2"))()
 
 local SelectedPart = "HumanoidRootPart"
 local Prediction = true
